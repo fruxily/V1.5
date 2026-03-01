@@ -456,7 +456,7 @@ fovCircle.Visible       = false
 fovCircle.Position      = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
 
 -- ═════════════════════════════════════════
---        LOCK BUTTON
+--        LOCK BUTTON (image decal)
 -- ═════════════════════════════════════════
 local lockGui = Instance.new("ScreenGui")
 lockGui.Name = "FruxLockBtn"
@@ -464,36 +464,23 @@ lockGui.ResetOnSpawn = false
 lockGui.IgnoreGuiInset = true
 lockGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
-local lockBtn = Instance.new("TextButton", lockGui)
-lockBtn.Size = UDim2.new(0, 90, 0, 35)
+local lockBtn = Instance.new("ImageButton", lockGui)
+lockBtn.Size = UDim2.new(0, 50, 0, 50)
 lockBtn.Position = UDim2.new(1, -110, 0.5, 60)
-lockBtn.BackgroundColor3 = Color3.fromRGB(18, 12, 35)
-lockBtn.BackgroundTransparency = 0.1
-lockBtn.TextColor3 = Color3.fromRGB(200, 180, 255)
-lockBtn.Text = "LOCK: OFF"
-lockBtn.Font = Enum.Font.GothamBlack
-lockBtn.TextSize = 13
+lockBtn.BackgroundTransparency = 1
+lockBtn.Image = "rbxassetid://84814080051995"
+lockBtn.ScaleType = Enum.ScaleType.Fit
 lockBtn.Active = true
 lockBtn.Draggable = true
 Instance.new("UICorner", lockBtn).CornerRadius = UDim.new(0, 8)
 local lbStroke = Instance.new("UIStroke", lockBtn)
 lbStroke.Color = Color3.fromRGB(100, 60, 220)
 lbStroke.Thickness = 2
-local lbGrad = Instance.new("UIGradient", lockBtn)
-lbGrad.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 15, 65)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 30, 80)),
-})
-lbGrad.Rotation = 45
 
 local function refreshLockBtn()
     if TargetPlr then
-        lockBtn.Text = TargetPlr.DisplayName or TargetPlr.Name
-        lockBtn.TextColor3 = Color3.fromRGB(100, 255, 150)
         lbStroke.Color = Color3.fromRGB(60, 220, 120)
     else
-        lockBtn.Text = "LOCK: OFF"
-        lockBtn.TextColor3 = Color3.fromRGB(200, 180, 255)
         lbStroke.Color = Color3.fromRGB(100, 60, 220)
     end
 end
@@ -599,7 +586,7 @@ GBMain:AddToggle("tb", {
     Callback = function(v) triggerEnabled = v end,
 })
 GBMain:AddToggle("keyon", { Text = "Enable Keybind", Default = false, Callback = function(v) keybindEnabled = v end })
-GBMain:AddInput("key",   { Text = "Keybind", Default = "", Placeholder = "e.g. Z", Callback = function(v) keybind = v:upper() end })
+GBMain:AddInput("key", { Text = "Keybind", Default = "", Placeholder = "e.g. Z", Callback = function(v) keybind = v:upper() end })
 GBPredDelay:AddInput("tbpred", { Text = "Prediction", Default = "", Numeric = true, Placeholder = "0",    Callback = function(v) tbPrediction = tonumber(v) or 0    end })
 GBPredDelay:AddInput("tbdel",  { Text = "Delay",      Default = "", Numeric = true, Placeholder = "0.03", Callback = function(v) tbDelay       = tonumber(v) or 0.03 end })
 GBChecks:AddToggle("knifeck", { Text = "Knife Check",      Default = false, Callback = function(v) checks.KnifeCheck      = v end })
@@ -867,9 +854,9 @@ RunService.RenderStepped:Connect(function()
         lastUI = now
         local ping = getPing()
 
-        resInfoMode:SetText("Mode: "  .. Psalms.Tech.RESOLVER)
+        resInfoMode:SetText("Mode: "   .. Psalms.Tech.RESOLVER)
         resInfoState:SetText("State: " .. (Psalms.Tech.ResolverEnabled and "Active" or "Disabled"))
-        resInfoPing:SetText("Ping: "  .. ping .. "ms")
+        resInfoPing:SetText("Ping: "   .. ping .. "ms")
         resInfoPred:SetText(string.format("H: %.3f | V: %.3f",
             Psalms.Tech.HorizontalPrediction, Psalms.Tech.VerticalPrediction))
         if TargetPlr then resInfoTarget:SetText("Target: " .. TargetPlr.Name)
@@ -887,7 +874,7 @@ RunService.RenderStepped:Connect(function()
             lockInfoStatus:SetText("Status: " .. (Psalms.Tech.Enabled and "Waiting" or "Off"))
         end
 
-        silentInfoFov:SetText("FOV: " .. tostring(math.floor(fovRadius)))
+        silentInfoFov:SetText("FOV: "   .. tostring(math.floor(fovRadius)))
         silentInfoState:SetText("State: " .. (Psalms.Tech.SilentMode and "Active" or "Off"))
         if TargetPlr then silentInfoTarget:SetText("Target: " .. TargetPlr.Name)
         else              silentInfoTarget:SetText("Target: None") end
